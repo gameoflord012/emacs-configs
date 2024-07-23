@@ -47,3 +47,8 @@
 (global-set-key (kbd "C-x b") 'ibuffer)
 
 (setq ibuffer-expert t)
+
+(use-package avy
+  :ensure t
+  :bind
+  ("M-s" . avy-goto-char))

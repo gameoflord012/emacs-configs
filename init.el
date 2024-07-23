@@ -57,7 +57,7 @@
  '(org-fontify-todo-headline nil)
  '(package-selected-packages
    (quote
-    (smex org-bullets beacon spacemacs-theme which-key use-package)))
+    (avy smex org-bullets beacon spacemacs-theme which-key use-package)))
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
