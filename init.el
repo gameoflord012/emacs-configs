@@ -14,11 +14,6 @@
   :init
   (which-key-mode))
 
-(use-package beacon
-  :ensure t
-  :init
-  (beacon-mode 1))
-
 (unless (package-installed-p 'spacemacs-theme)
   (package-refresh-contents)
   (package-install 'spacemacs-theme))
@@ -57,7 +52,7 @@
  '(org-fontify-todo-headline nil)
  '(package-selected-packages
    (quote
-    (avy smex org-bullets beacon spacemacs-theme which-key use-package)))
+    (company-irony company dashboard rainbow-delimiters switch-window rainbow rainbow-mode avy smex org-bullets beacon spacemacs-theme which-key use-package)))
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
