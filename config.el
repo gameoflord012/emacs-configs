@@ -22,7 +22,7 @@
 
 (setq scroll-conservatively 100)
 (setq ring-bell-function 'ignore)
-(setq make-backup-file nil)
+(setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq inhibit-startup-message t)
 
@@ -98,7 +98,8 @@
   :ensure t
   :config
   (setq company-idle-delay 0)
-  (setq company-minium-prefix-length 2))
+  (setq company-minium-prefix-length 2)
+  (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package company-irony
   :ensure t
@@ -112,12 +113,7 @@
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'objc-mode-hook 'irony-mode)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-option))
-
-(with-eval-after-load 'company
-  (add-hook 'c++-mode-hook 'company-mode)
-  (add-hook 'c-mode-hook 'company-mode)
-  (add-hook 'emacs-lisp-mode-hook 'company-mode))
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 
 (use-package dashboard     
   :ensure t     
