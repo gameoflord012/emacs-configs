@@ -21,10 +21,10 @@
 (when window-system (global-prettify-symbols-mode t))
 
 (setq scroll-conservatively 100)
-(setq ring-bell-function 'ignore)
+(setq ring-bell-fufnction 'ignore)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
-(setq inhibit-startup-message t)
+(setq inhibit-start-up-message t)
 
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -86,6 +86,15 @@
 
 (setq org-src-window-setup 'current-window)
 
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook #'yas-minor-mode))
+
+(use-package yasnippet-snippets
+  :ensure t)
+
 (line-number-mode 1)
 (column-number-mode 1)
 
@@ -94,26 +103,38 @@
   :init
   (rainbow-delimiters-mode 1))
 
-(use-package company
-  :ensure t
-  :config
-  (setq company-idle-delay 0)
-  (setq company-minium-prefix-length 2)
-  (add-hook 'after-init-hook 'global-company-mode))
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+	 (c-mode . lsp)
+	 ;; if you want which-key integration
+	 (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
 
-(use-package company-irony
-  :ensure t
-  :config
-  (require 'company)
-  (add-to-list 'company-backends 'company-irony))
+;; optionally
+;; (use-package lsp-ui			
+;;   :commands lsp-ui-mode)
 
-(use-package irony
+;; if you are helm user
+;(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+;; if you are ivy user
+;(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+;(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+;; optionally if you want to use debugger
+;(use-package dap-mode)
+;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+
+;; optional if you want which-key integration
+;(use-package which-key
+;    :config
+;    (which-key-mode))
+
+(use-package hungry-delete
   :ensure t
-  :config
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+  :config (global-hungry-delete-mode))
 
 (use-package dashboard     
   :ensure t     

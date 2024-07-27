@@ -27,13 +27,11 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
- '(custom-enabled-themes (quote (spacemacs-dark)))
+ '(custom-enabled-themes '(spacemacs-dark))
  '(custom-safe-themes
-   (quote
-    ("d7bf35cbf07fe90b420ca85625d4e1baff08fd64282562dde9dc788ed89c8242" "7fd8b914e340283c189980cd1883dbdef67080ad1a3a9cc3df864ca53bdc89cf" default)))
+   '("d7bf35cbf07fe90b420ca85625d4e1baff08fd64282562dde9dc788ed89c8242" "7fd8b914e340283c189980cd1883dbdef67080ad1a3a9cc3df864ca53bdc89cf" default))
  '(hl-todo-keyword-faces
-   (quote
-    (("TODO" . "#dc752f")
+   '(("TODO" . "#dc752f")
      ("NEXT" . "#dc752f")
      ("THEM" . "#2d9574")
      ("PROG" . "#4f97d7")
@@ -47,13 +45,12 @@
      ("TEMP" . "#b1951d")
      ("FIXME" . "#dc752f")
      ("XXX+" . "#dc752f")
-     ("\\?\\?\\?+" . "#dc752f"))))
+     ("\\?\\?\\?+" . "#dc752f")))
  '(org-fontify-done-headline nil)
  '(org-fontify-todo-headline nil)
  '(package-selected-packages
-   (quote
-    (company-irony company dashboard rainbow-delimiters switch-window rainbow rainbow-mode avy smex org-bullets beacon spacemacs-theme which-key use-package)))
- '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e"))))
+   '(yasnippet-snippets yasnippet lsp-ui hungry-delete company-irony company dashboard rainbow-delimiters switch-window rainbow rainbow-mode avy smex org-bullets beacon spacemacs-theme which-key use-package))
+ '(pdf-view-midnight-colors '("#b2b2b2" . "#292b2e")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
