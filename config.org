@@ -121,8 +121,32 @@
 
 * Window
 ** maximize
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+#+END_SRC
 
 ** switch window
+*** switch when create new window
+#+BEGIN_SRC emacs-lisp
+  (defun my-split-window-vertically()
+    (interactive)
+    (split-window-vertically)
+    (other-window 1))
+
+  (defun my-split-window-horizontally()
+    (interactive)
+    (split-window-horizontally)
+    (other-window 1))
+
+  (keymap-global-unset "C-x 3")
+  (keymap-global-unset "C-x 2")
+
+  (keymap-global-set "C-x 2" 'my-split-window-vertically)
+  (keymap-global-set "C-x 3" 'my-split-window-horizontally)
+#+END_SRC
+
+
+*** switch with multiple windows
 #+BEGIN_SRC emacs-lisp
   (use-package switch-window
     :ensure t
@@ -139,16 +163,17 @@
 #+BEGIN_SRC emacs-lisp
   (setq org-src-window-setup 'current-window)
 #+END_SRC
-
 * Snippet
 ** yasnippet
+
 #+begin_src emacs-lisp
   (use-package yasnippet
     :ensure t
     :config
     (yas-reload-all)
-    (add-hook 'prog-mode-hook #'yas-minor-mode))
-
+    (add-hook 'prog-mode-hook #'yas-minor-mode)
+    (add-hook 'org-mode-hook #'yas-minor-mode))
+  
   (use-package yasnippet-snippets
     :ensure t)
 #+end_src

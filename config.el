@@ -73,6 +73,24 @@
   (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
 (global-set-key (kbd "C-c r") 'config-reload)
 
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+(defun my-split-window-vertically()
+  (interactive)
+  (split-window-vertically)
+  (other-window 1))
+
+(defun my-split-window-horizontally()
+  (interactive)
+  (split-window-horizontally)
+  (other-window 1))
+
+(keymap-global-unset "C-x 3")
+(keymap-global-unset "C-x 2")
+
+(keymap-global-set "C-x 2" 'my-split-window-vertically)
+(keymap-global-set "C-x 3" 'my-split-window-horizontally)
+
 (use-package switch-window
   :ensure t
   :config
@@ -90,7 +108,8 @@
   :ensure t
   :config
   (yas-reload-all)
-  (add-hook 'prog-mode-hook #'yas-minor-mode))
+  (add-hook 'prog-mode-hook #'yas-minor-mode)
+  (add-hook 'org-mode-hook #'yas-minor-mode))
 
 (use-package yasnippet-snippets
   :ensure t)
