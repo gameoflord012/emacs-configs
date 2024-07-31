@@ -1,0 +1,23 @@
+#!/bin/bash
+
+main()
+{
+    if [ -z "$1" ]; then
+	echo "Provide commit message plz"
+	return
+    fi    
+
+    # config files
+    git add -f config.el
+    git add -f config.org
+    git add -f init.el
+
+    # snippets
+    git add -f snippets/*
+
+    git add gitpush
+    git commit -m "$1"
+    git push
+}
+
+main "$1"

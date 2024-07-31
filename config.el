@@ -114,6 +114,10 @@
 (use-package yasnippet-snippets
   :ensure t)
 
+(use-package flycheck
+  :config
+  (global-flycheck-mode))
+
 (line-number-mode 1)
 (column-number-mode 1)
 
@@ -132,9 +136,11 @@
 	 (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
-;; optionally
-;; (use-package lsp-ui			
-;;   :commands lsp-ui-mode)
+;; ivy
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+
+ (use-package lsp-ui			
+   :commands lsp-ui-mode)
 
 ;; if you are helm user
 ;(use-package helm-lsp :commands helm-lsp-workspace-symbol)
@@ -152,8 +158,7 @@
 ;    (which-key-mode))
 
 (use-package hungry-delete
-  :ensure t
-  :config (global-hungry-delete-mode))
+  :ensure t)
 
 (use-package dashboard     
   :ensure t     
@@ -161,3 +166,7 @@
   (dashboard-setup-startup-hook)
   (setq dashboard-item '((recents . 10)))
   (setq dashboard-banner-logo-title "Gru"))
+
+(use-package cmake-mode
+  :ensure t
+  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
