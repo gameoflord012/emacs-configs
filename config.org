@@ -178,6 +178,13 @@
     :ensure t)
 #+end_src
 * Editor
+** flycheck
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :config
+    (global-flycheck-mode))
+#+END_SRC
+
 ** line number
 #+BEGIN_SRC emacs-lisp
   (line-number-mode 1)
@@ -190,7 +197,7 @@
     :init
     (rainbow-delimiters-mode 1))
 #+END_SRC
-** company
+** lsp-mode
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
     :init
@@ -202,9 +209,11 @@
 	   (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
 
-  ;; optionally
-  ;; (use-package lsp-ui			
-  ;;   :commands lsp-ui-mode)
+  ;; ivy
+  (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+
+   (use-package lsp-ui			
+     :commands lsp-ui-mode)
 
   ;; if you are helm user
   ;(use-package helm-lsp :commands helm-lsp-workspace-symbol)
@@ -226,7 +235,8 @@
 #+begin_src  emacs-lisp
   (use-package hungry-delete
     :ensure t
-    :config (global-hungry-delete-mode))
+    :bind (("C-c DEL" . hungry-delete-backward))
+  )
 #+end_src
 * Dashboard
 #+BEGIN_SRC emacs-lisp   
@@ -236,4 +246,10 @@
     (dashboard-setup-startup-hook)
     (setq dashboard-item '((recents . 10)))
     (setq dashboard-banner-logo-title "Gru")) 
+#+END_SRC
+* CMake-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package cmake-mode
+    :ensure t
+    :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
 #+END_SRC
