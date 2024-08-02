@@ -1,22 +1,5 @@
 (add-to-list 'load-path "~/.emacs.d/loadpath")
 
-(require 'autopair)
-(autopair-global-mode)
-
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-(defvar my-term-shell "/bin/bash")
-(defadvice ansi-term (before force-bash)
-  (interactive (list my-term-shell)))
-(ad-activate 'ansi-term)
-
-(global-set-key (kbd "<s-return>") 'ansi-term)
-
-(use-package org-bullets
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))
-
 (when window-system (global-hl-line-mode t))
 (when window-system (global-prettify-symbols-mode t))
 
@@ -29,6 +12,17 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
+
+(setq ring-bell-function 'ignore)
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+(defvar my-term-shell "/bin/bash")
+(defadvice ansi-term (before force-bash)
+  (interactive (list my-term-shell)))
+(ad-activate 'ansi-term)
+
+(global-set-key (kbd "<s-return>") 'ansi-term)
 
 (setq ido-enable-flex-matching nil)
 (setq ido-create-new-buffer 'always)
@@ -55,7 +49,6 @@
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
 
 (global-set-key (kbd "C-x b") 'ibuffer)
-
 (setq ibuffer-expert t)
 
 (use-package avy
@@ -104,15 +97,11 @@
 
 (setq org-src-window-setup 'current-window)
 
-(use-package yasnippet
-  :ensure t
-  :config
-  (yas-reload-all)
-  (add-hook 'prog-mode-hook #'yas-minor-mode)
-  (add-hook 'org-mode-hook #'yas-minor-mode))
+(add-hook 'prog-mode-hook 'electric-pair-mode)
 
-(use-package yasnippet-snippets
-  :ensure t)
+(use-package lsp-treemacs
+  :ensure t
+  :commands lsp-treemacs-errors-list)
 
 (use-package flycheck
   :config
@@ -128,20 +117,13 @@
 
 (use-package lsp-mode
   :ensure t
-  :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  :init    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
   :hook (
 	 (c-mode . lsp)
 	 (c++-mode . lsp)
 	 (lsp-mode . lsp-enable-which-key-integration))
   )
-
-;; ivy
-(use-package lsp-ivy
-  :ensure t
-  :bind (("C-," . lsp-ivy-workspace-symbol))
-)
 
 (use-package lsp-ui
   :ensure t
@@ -152,6 +134,37 @@
   :bind (("C-c DEL" . hungry-delete-backward))
 )
 
+(use-package lsp-ivy
+  :ensure t
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t))
+
+(use-package counsel
+  :ensure t)
+
+
+
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook #'yas-minor-mode)
+  (add-hook 'org-mode-hook #'yas-minor-mode))
+
+(use-package yasnippet-snippets
+  :ensure t)
+
+(use-package dap-mode
+  :ensure t)
+
+(with-eval-after-load 'lsp-mode
+  (require 'dap-cpptools))
+
+(use-package cmake-mode
+  :ensure t
+  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+
 (use-package dashboard     
   :ensure t     
   :config
@@ -159,6 +172,7 @@
   (setq dashboard-item '((recents . 10)))
   (setq dashboard-banner-logo-title "Gru"))
 
-(use-package cmake-mode
+(use-package org-bullets
   :ensure t
-  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode))))

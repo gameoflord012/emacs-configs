@@ -49,7 +49,7 @@
  '(org-fontify-done-headline nil)
  '(org-fontify-todo-headline nil)
  '(package-selected-packages
-   '(lsp-ivy flycheck xterm-color cmake-mode yasnippet-snippets yasnippet lsp-ui hungry-delete company-irony company dashboard rainbow-delimiters switch-window rainbow rainbow-mode avy smex org-bullets beacon spacemacs-theme which-key use-package))
+   '(dap-mode ivy-mode counsel helm-lsp lsp-treemacs lsp-ivy flycheck xterm-color cmake-mode yasnippet-snippets yasnippet lsp-ui hungry-delete company-irony company dashboard rainbow-delimiters switch-window rainbow rainbow-mode avy smex org-bullets beacon spacemacs-theme which-key use-package))
  '(pdf-view-midnight-colors '("#b2b2b2" . "#292b2e")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
