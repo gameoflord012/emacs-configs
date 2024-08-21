@@ -1,4 +1,9 @@
 * Initialize
+** defalias
+#+BEGIN_SRC emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
 ** load-path
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/loadpath")
@@ -11,84 +16,23 @@
 
   (setq scroll-conservatively 100)
   (setq ring-bell-fufnction 'ignore)
-  (setq make-backup-files nil)
   (setq auto-save-default nil)
   (setq inhibit-start-up-message t)
+  (setq backup-directory-alist            '((".*" . "~/.emacs_backups")))
 
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
 
+  ;; winner-mode: use for undo and redo cursor position
+  (winner-mode 1)
+  (define-key winner-mode-map (kbd "C-c [") 'winner-undo)
+  (define-key winner-mode-map (kbd "C-c ]") 'winner-redo)
+
+  ;; Disable ring bell
   (setq ring-bell-function 'ignore)
 #+END_SRC
-* Terminal
-#+BEGIN_SRC emacs-lisp
-  (defalias 'yes-or-no-p 'y-or-n-p)
 
-  (defvar my-term-shell "/bin/bash")
-  (defadvice ansi-term (before force-bash)
-    (interactive (list my-term-shell)))
-  (ad-activate 'ansi-term)
-
-  (global-set-key (kbd "<s-return>") 'ansi-term)
-#+END_SRC
-
-* Misc
-* IDO
-** enable ido
-#+BEGIN_SRC emacs-lisp
-  (setq ido-enable-flex-matching nil)
-  (setq ido-create-new-buffer 'always)
-  (setq ido-everywhere t)
-  (ido-mode 1)
-#+END_SRC
-
-** ido-vertical
-#+BEGIN_SRC emacs-lisp
-  (use-package ido-vertical-mode
-    :ensure t
-    :init
-    (ido-vertical-mode 1))
-  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
-#+END_SRC
-
-** smex(M-x completion)
-#+BEGIN_SRC emacs-lisp
-  (use-package smex
-    :ensure t
-    :init (smex-initialize)
-    :bind
-    ("M-x". smex))
-#+END_SRC
-
-** switch buffers
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
-#+END_SRC
-
-* Buffers
-** kill buffer
-#+BEGIN_SRC emacs-lisp
-  (defun kill-current-buffer ()
-    (interactive)
-    (kill-buffer (current-buffer)))
-  (global-set-key (kbd "C-x k") 'kill-current-buffer)
-#+END_SRC
-
-** ibuffer
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-x b") 'ibuffer)
-  (setq ibuffer-expert t)
-#+END_SRC
-
-* avy
-#+BEGIN_SRC emacs-lisp
-  (use-package avy
-    :ensure t
-    :bind ("M-s" . avy-goto-char))
-#+END_SRC
-
-* Config edit/reload
 ** edit
 #+BEGIN_SRC emacs-lisp
   (defun config-visit ()
@@ -96,7 +40,6 @@
     (find-file "~/.emacs.d/config.org"))
   (global-set-key (kbd "C-c e") `config-visit)
 #+END_SRC
-
 ** reload
 #+BEGIN_SRC emacs-lisp
   (defun config-reload ()
@@ -105,8 +48,48 @@
     (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
   (global-set-key (kbd "C-c r") 'config-reload)
 #+END_SRC
+* Modeline
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package moody
+  ;;   :ensure t
+  ;;   :config
+  ;;   (moody-replace-mode-line-front-space)
+  ;;   (moody-replace-mode-line-buffer-identification)
+  ;;   (moody-replace-vc-mode))
 
-* Window
+  ;; (set-face-attribute 'mode-line nil :box nil)
+  ;; (set-face-attribute 'mode-line-inactive nil :box nil)
+
+  ;; (set-face-attribute 'mode-line nil :overline "blue")
+  ;; (set-face-attribute 'mode-line nil :underline `(:color "blue" :position t))
+
+  ;; (set-face-attribute 'mode-line-inactive nil :overline "green")
+  ;; (set-face-attribute 'mode-line-inactive nil :underline `(:color "green" :position t))
+
+  ;; (use-package minions
+  ;;   :ensure t
+  ;;   :config
+  ;;   (keymap-global-set "<S-down-mouse-3>" #'minions-minor-modes-menu))
+#+END_SRC
+
+* Terminal
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<s-return>") 'eshell)
+#+END_SRC
+* Window and Buffer
+** switch buffer
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x b") 'ibuffer)
+  (setq ibuffer-expert t)
+  (global-set-key  (kbd "C-x C-b") 'counsel-switch-buffer)
+#+END_SRC
+
+** kill buffer and window
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c k") 'kill-buffer-and-window)
+  (keymap-global-set "C-x k" 'kill-this-buffer)
+#+END_SRC
+
 ** maximize
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -132,7 +115,6 @@
   (keymap-global-set "C-x 3" 'my-split-window-horizontally)
 #+END_SRC
 
-
 *** switch with multiple windows
 #+BEGIN_SRC emacs-lisp
   (use-package switch-window
@@ -140,7 +122,7 @@
     :config
     (setq switch-window-edit-style 'minibuffer)
     (setq switch-window-increase 4)
-    (setq switch-window-threshold 2)
+    (setq switch-window-threshold 3)
     (setq switch-window-shortcut-style 'qwerty)
     (setq switch-window-qwerty-shortcuts '("a" "s" "d" "f" "j" "k" "l"))
     :bind
@@ -152,76 +134,94 @@
 #+END_SRC
 
 * Editor
+** scrolling
+#+BEGIN_SRC emacs-lisp
+  (use-package smooth-scrolling
+    :ensure
+    :config
+    (smooth-scrolling-mode 1))
+#+END_SRC
+
+** company
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :config
+    (setq company-minimum-prefix-length 2)
+    (global-company-mode))
+#+END_SRC
+
+** ivy
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :ensure t
+    :config
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq enable-recursive-minibuffers t)
+    (setq ivy-count-format "(%d/%d) "))
+
+#+END_SRC
+
+*** counsel
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel
+    :ensure t
+    :config
+    (counsel-mode t))
+
+  (global-set-key "\C-s" 'swiper)
+#+END_SRC
+
+*** pos-frame
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-posframe
+    :ensure t
+    :config
+    (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display)))
+    (ivy-posframe-mode 1))
+
+  ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+  ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-center)))
+  ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-bottom-left)))
+  ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-window-bottom-left)))
+  ;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
+  ;; (ivy-posframe-mode 1)
+#+END_SRC
+
+
+** avy
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :ensure t
+    :bind ("M-s" . avy-goto-char))
+#+END_SRC
 ** electric-pair
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'electric-pair-mode)
-#+END_SRC
-
-** treemacs
-#+BEGIN_SRC emacs-lisp
-  (use-package lsp-treemacs
-    :ensure t
-    :commands lsp-treemacs-errors-list)
-#+END_SRC
-
-** flycheck
-#+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    :config
-    (global-flycheck-mode))
 #+END_SRC
 
 ** line number
 #+BEGIN_SRC emacs-lisp
   (line-number-mode 1)
   (column-number-mode 1)
+  (global-display-line-numbers-mode)
 #+END_SRC
 ** rainbow-delimiter
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
     :ensure t
-    :init
+    :config
     (rainbow-delimiters-mode 1))
-#+END_SRC
-** lsp-mode
-#+BEGIN_SRC emacs-lisp
-  (use-package lsp-mode
-    :ensure t
-    :init    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-    (setq lsp-keymap-prefix "C-c l")
-    :hook (
-	   (c-mode . lsp)
-	   (c++-mode . lsp)
-	   (lsp-mode . lsp-enable-which-key-integration))
-    )
-
-  (use-package lsp-ui
-    :ensure t
-    :commands lsp-ui-mode)
 #+END_SRC
 
 ** hungry-delete
 #+begin_src  emacs-lisp
   (use-package hungry-delete
     :ensure t
-    :bind (("C-c DEL" . hungry-delete-backward))
-  )
+    :bind (("C-c DEL" . hungry-delete-backward)
+	   ("C-c d" . hungry-delete-forward)))
 #+end_src
-
-** ivy + counsel
-#+BEGIN_SRC emacs-lisp
-  (use-package lsp-ivy
-    :ensure t
-    :config
-    (setq ivy-use-virtual-buffers t)
-    (setq enable-recursive-minibuffers t))
-
-  (use-package counsel
-    :ensure t)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-#+END_SRC
 
 ** yasnippet
 #+begin_src emacs-lisp
@@ -235,21 +235,26 @@
   (use-package yasnippet-snippets
     :ensure t)
 #+end_src
-* Debug
-** dap-mode
-#+BEGIN_SRC emacs-lisp
-  (use-package dap-mode
-    :ensure t)
 
-  (with-eval-after-load 'lsp-mode
-    (require 'dap-cpptools))
+* Project
+** projectile
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :config
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (projectile-mode +1)
+    (setq projectile-completion-system 'ivy))
 #+END_SRC
-* CMake-mode
+
+* Language
+** cmake-mode
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode
     :ensure t
     :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
 #+END_SRC
+
 * Appearance
 ** Dashboard
 #+BEGIN_SRC emacs-lisp   
@@ -258,7 +263,8 @@
     :config
     (dashboard-setup-startup-hook)
     (setq dashboard-item '((recents . 10)))
-    (setq dashboard-banner-logo-title "Gru")) 
+    (setq dashboard-banner-logo-title "DogShit")
+    (setq dashboard-startup-banner "~/.emacs.d/banners/dogshit.txt"))
 #+END_SRC
 ** Org Bullet
 #+BEGIN_SRC emacs-lisp
